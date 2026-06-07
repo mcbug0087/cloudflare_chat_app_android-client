@@ -45,6 +45,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewPager.adapter = MainPagerAdapter(this)
         binding.viewPager.offscreenPageLimit = 3
+        binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+        binding.tabLayout.tabMode = TabLayout.MODE_FIXED
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
