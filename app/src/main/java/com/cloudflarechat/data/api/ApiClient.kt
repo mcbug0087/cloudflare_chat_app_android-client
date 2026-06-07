@@ -48,10 +48,4 @@ object ApiClient {
             .build()
             .create(ApiService::class.java)
     }
-
-    fun createWebSocketClient(listener: WebSocketListener): OkHttpClient {
-        return OkHttpClient.Builder()
-            .readTimeout(0, TimeUnit.MILLISECONDS)
-            .build()
-    }
 }

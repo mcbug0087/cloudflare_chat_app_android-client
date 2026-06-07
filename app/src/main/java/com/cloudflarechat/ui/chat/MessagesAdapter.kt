@@ -42,14 +42,15 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
             binding.tvContent.text = message.content
             binding.tvTime.text = message.createdAt?.takeLast(8) ?: ""
 
-            val params = binding.root.layoutParams as ViewGroup.MarginLayoutParams
             if (isSelf) {
-                params.gravity = Gravity.END
                 binding.tvSender.gravity = Gravity.END
+                binding.tvContent.gravity = Gravity.END
+                binding.tvTime.gravity = Gravity.END
                 binding.root.setBackgroundColor(0xFFE3F2FD.toInt())
             } else {
-                params.gravity = Gravity.START
                 binding.tvSender.gravity = Gravity.START
+                binding.tvContent.gravity = Gravity.START
+                binding.tvTime.gravity = Gravity.START
                 binding.root.setBackgroundColor(0xFFF5F5F5.toInt())
             }
         }
