@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Cloudflare Chat</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="nickname">昵称</string>
+    <string name="password">密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="hint_nickname">请输入昵称</string>
+    <string name="hint_password">请输入密码（至少6位）</string>
+    <string name="chats">对话</string>
+    <string name="friends">好友</string>
+    <string name="groups">群聊</string>
+    <string name="add_friend">添加好友</string>
+    <string name="create_group">创建群聊</string>
+    <string name="join_group">加入群聊</string>
+    <string name="search_user">搜索用户</string>
+    <string name="search_group">搜索群聊</string>
+    <string name="send">发送</string>
+    <string name="logout">退出登录</string>
+    <string name="loading">加载中...</string>
+    <string name="no_data">暂无数据</string>
+    <string name="connection_error">连接错误</string>
+    <string name="send_failed">发送失败</string>
+    <string name="typing">正在输入...</string>
+</resources>
