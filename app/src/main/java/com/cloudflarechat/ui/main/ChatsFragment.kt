@@ -42,6 +42,17 @@ class ChatsFragment : Fragment() {
     private fun loadChats() {
         lifecycleScope.launch {
             try {
+                // 加载好友列表，用于显示备注
+                val friends = repository.getFriends().getOrDefault(emptyList())
+                val friendNameMap = mutableMapOf<String, String>()
+                for (f in friends) {
+                    // 用好友昵称匹配 ChatInfo.name，映射到备注
+                    friendNameMap[f.nickname] = f.remark?.takeIf { it.isNotBlank() } ?: f.nickname
+                    // 同时用好友 ID 匹配，以防 chat.id 就是好友的用户 ID
+                    friendNameMap[f.id] = f.remark?.takeIf { it.isNotBlank() } ?: f.nickname
+                }
+                chatsAdapter.friendNames = friendNameMap
+
                 val privateChats = repository.getPrivateChats().getOrDefault(emptyList())
                 val groups = repository.getGroups().getOrDefault(emptyList())
                 val allChats = privateChats + groups.map { it.copy(chatType = "group") }

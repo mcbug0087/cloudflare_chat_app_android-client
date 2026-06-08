@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayout
@@ -50,6 +51,13 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.offscreenPageLimit = 3
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
         binding.tabLayout.tabMode = TabLayout.MODE_FIXED
+        binding.tabLayout.setTabTextColors(
+            ContextCompat.getColor(this, android.R.color.white),
+            ContextCompat.getColor(this, R.color.white)
+        )
+        binding.tabLayout.setSelectedTabIndicatorColor(
+            ContextCompat.getColor(this, R.color.white)
+        )
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
