@@ -13,8 +13,6 @@ object TimeUtils {
     private val isoFormatZ = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault()).apply {
         timeZone = TimeZone.getTimeZone("UTC")
     }
-    private val displayFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-    private val dateFormat = SimpleDateFormat("MM-dd HH:mm", Locale.getDefault())
     private val fullFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
     fun formatTime(timeStr: String?): String {
@@ -26,12 +24,10 @@ object TimeUtils {
             when {
                 diff < 60000 -> "刚刚"
                 diff < 3600000 -> "${diff / 60000}分钟前"
-                diff < 86400000 -> displayFormat.format(date)
-                diff < 604800000 -> dateFormat.format(date)
                 else -> fullFormat.format(date)
             }
         } catch (e: Exception) {
-            // 尝试只取前16个字符作为显示
+            // 解析失败时尝试提取可读部分
             if (timeStr.length >= 16) timeStr.substring(5, 16).replace("T", " ") else timeStr
         }
     }

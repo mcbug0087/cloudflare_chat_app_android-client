@@ -12,8 +12,8 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     private val messages = mutableListOf<Message>()
     var currentUserId: String = ""
-    /** 好友备注映射: friendId -> remark */
-    var friendRemarks: Map<String, String> = emptyMap()
+    /** 发送者ID -> 显示名称映射（包含好友备注和群成员昵称） */
+    var senderNames: Map<String, String> = emptyMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,11 +41,13 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(message: Message) {
             val isSelf = message.senderId == currentUserId
-            // 如果有好友备注则显示备注，否则显示昵称
-            val displayName = if (!isSelf && message.senderId != null) {
-                friendRemarks[message.senderId] ?: message.senderNickname ?: message.senderId
-            } else {
+            // 优先从名称映射中查找，其次用 API 返回的昵称，最后用 ID
+            val displayName = if (isSelf) {
                 message.senderNickname ?: message.senderId
+            } else {
+                senderNames[message.senderId]
+                    ?: message.senderNickname
+                    ?: message.senderId
             }
             binding.tvSender.text = displayName
             binding.tvContent.text = message.content

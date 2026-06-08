@@ -64,13 +64,31 @@ class ChatActivity : AppCompatActivity() {
         lifecycleScope.launch {
             currentUserId = prefs.userId.first() ?: ""
             messagesAdapter.currentUserId = currentUserId
-            // 加载好友备注映射
-            val friends = repository.getFriends().getOrDefault(emptyList())
-            val remarkMap = mutableMapOf<String, String>()
-            for (f in friends) {
-                remarkMap[f.id] = f.remark?.takeIf { it.isNotBlank() } ?: f.nickname
+
+            // 构建发送者名称映射
+            val nameMap = mutableMapOf<String, String>()
+
+            if (chatType == "group") {
+                // 群聊：加载群成员信息
+                val groupDetail = repository.getGroupDetail(chatId).getOrNull()
+                groupDetail?.members?.forEach { member ->
+                    // 优先使用群昵称
+                    nameMap[member.id] = member.groupNickname?.takeIf { it.isNotBlank() }
+                        ?: member.nickname
+                }
             }
-            messagesAdapter.friendRemarks = remarkMap
+
+            // 加载好友备注（私聊和群聊都适用）
+            val friends = repository.getFriends().getOrDefault(emptyList())
+            for (f in friends) {
+                val display = f.remark?.takeIf { it.isNotBlank() } ?: f.nickname
+                // 只在还没有群成员昵称时覆盖（好友备注可能更个性化）
+                if (!nameMap.containsKey(f.id)) {
+                    nameMap[f.id] = display
+                }
+            }
+
+            messagesAdapter.senderNames = nameMap
             loadMessages()
             connectWebSocket()
         }
