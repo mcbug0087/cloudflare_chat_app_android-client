@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.cloudflarechat.data.model.ChatInfo
 import com.cloudflarechat.databinding.ItemChatBinding
+import com.cloudflarechat.util.TimeUtils
 
 class GroupsAdapter(
     private val onClick: (ChatInfo) -> Unit,
@@ -27,7 +28,7 @@ class GroupsAdapter(
         fun bind(group: ChatInfo) {
             binding.tvName.text = group.name ?: "未知群聊"
             binding.tvLastMessage.text = group.lastMessage?.content ?: ""
-            binding.tvTime.text = group.lastMessage?.createdAt?.takeLast(8) ?: ""
+            binding.tvTime.text = TimeUtils.formatTime(group.lastMessage?.createdAt)
             binding.root.setOnClickListener { onClick(group) }
             binding.root.setOnLongClickListener {
                 onLongClick(group)

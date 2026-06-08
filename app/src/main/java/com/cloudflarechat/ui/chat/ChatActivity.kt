@@ -64,6 +64,13 @@ class ChatActivity : AppCompatActivity() {
         lifecycleScope.launch {
             currentUserId = prefs.userId.first() ?: ""
             messagesAdapter.currentUserId = currentUserId
+            // 加载好友备注映射
+            val friends = repository.getFriends().getOrDefault(emptyList())
+            val remarkMap = mutableMapOf<String, String>()
+            for (f in friends) {
+                remarkMap[f.id] = f.remark?.takeIf { it.isNotBlank() } ?: f.nickname
+            }
+            messagesAdapter.friendRemarks = remarkMap
             loadMessages()
             connectWebSocket()
         }
