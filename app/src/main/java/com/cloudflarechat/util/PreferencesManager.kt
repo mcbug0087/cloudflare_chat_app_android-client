@@ -39,6 +39,12 @@ class PreferencesManager(private val context: Context) {
         }
     }
 
+    suspend fun saveNickname(nickname: String) {
+        context.dataStore.edit { prefs ->
+            prefs[KEY_NICKNAME] = nickname
+        }
+    }
+
     suspend fun clearAll() {
         context.dataStore.edit { it.clear() }
     }

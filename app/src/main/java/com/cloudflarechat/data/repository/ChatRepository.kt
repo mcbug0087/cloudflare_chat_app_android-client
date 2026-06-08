@@ -116,6 +116,151 @@ class ChatRepository {
         }
     }
 
+    // User Profile
+    suspend fun changeNickname(nickname: String): Result<User> {
+        return try {
+            val response = api.changeNickname(ChangeNicknameRequest(nickname))
+            if (response.isSuccessful && response.body()?.data != null) {
+                Result.success(response.body()!!.data!!)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "修改昵称失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun changePassword(oldPassword: String, newPassword: String): Result<Unit> {
+        return try {
+            val response = api.changePassword(ChangePasswordRequest(oldPassword, newPassword))
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "修改密码失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun deleteAccount(password: String): Result<Unit> {
+        return try {
+            val response = api.deleteAccount(DeleteAccountRequest(password))
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "注销账户失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // Admin
+    suspend fun adminGetUsers(): Result<List<AdminUser>> {
+        return try {
+            val response = api.adminGetUsers()
+            if (response.isSuccessful && response.body()?.data != null) {
+                Result.success(response.body()!!.data!!)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "获取用户列表失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun adminGetGroups(): Result<List<AdminGroup>> {
+        return try {
+            val response = api.adminGetGroups()
+            if (response.isSuccessful && response.body()?.data != null) {
+                Result.success(response.body()!!.data!!)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "获取群聊列表失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun adminBanUser(userId: String): Result<Unit> {
+        return try {
+            val response = api.adminBanUser(userId)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "封禁失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun adminUnbanUser(userId: String): Result<Unit> {
+        return try {
+            val response = api.adminUnbanUser(userId)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "解封失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun adminDeleteUser(userId: String): Result<Unit> {
+        return try {
+            val response = api.adminDeleteUser(userId)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "删除失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun adminChangeUserPassword(userId: String, newPassword: String): Result<Unit> {
+        return try {
+            val response = api.adminChangeUserPassword(userId, AdminChangePasswordRequest(newPassword))
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "修改密码失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun adminDisbandGroup(groupId: String): Result<Unit> {
+        return try {
+            val response = api.adminDisbandGroup(groupId)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "解散失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun adminUpdateSettings(nickname: String?, newPassword: String?): Result<User> {
+        return try {
+            val response = api.adminUpdateSettings(AdminUpdateSettingsRequest(nickname, newPassword))
+            if (response.isSuccessful && response.body()?.data != null) {
+                Result.success(response.body()!!.data!!)
+            } else {
+                Result.failure(Exception(response.body()?.error?.message ?: "更新设置失败"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     // Private Chats
     suspend fun getPrivateChats(): Result<List<ChatInfo>> {
         return try {

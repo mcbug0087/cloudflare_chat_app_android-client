@@ -17,8 +17,18 @@ interface ApiService {
     @GET("api/users/me")
     suspend fun getCurrentUser(): Response<ApiResponse<User>>
 
+    @PUT("api/users/me")
+    suspend fun changeNickname(@Body request: ChangeNicknameRequest): Response<ApiResponse<User>>
+
     @GET("api/users/search")
     suspend fun searchUsers(@Query("q") query: String): Response<ApiResponse<List<User>>>
+
+    // Auth - password & account
+    @POST("api/auth/change-password")
+    suspend fun changePassword(@Body request: ChangePasswordRequest): Response<ApiResponse<Any>>
+
+    @DELETE("api/auth/delete-account")
+    suspend fun deleteAccount(@Body request: DeleteAccountRequest): Response<ApiResponse<Any>>
 
     // Friends
     @GET("api/friends")
@@ -127,4 +137,32 @@ interface ApiService {
         @Path("groupId") groupId: String,
         @Body request: SendMessageRequest
     ): Response<ApiResponse<Message>>
+
+    // Admin
+    @GET("api/admin/users")
+    suspend fun adminGetUsers(): Response<ApiResponse<List<AdminUser>>>
+
+    @GET("api/admin/groups")
+    suspend fun adminGetGroups(): Response<ApiResponse<List<AdminGroup>>>
+
+    @POST("api/admin/users/{userId}/ban")
+    suspend fun adminBanUser(@Path("userId") userId: String): Response<ApiResponse<Any>>
+
+    @POST("api/admin/users/{userId}/unban")
+    suspend fun adminUnbanUser(@Path("userId") userId: String): Response<ApiResponse<Any>>
+
+    @DELETE("api/admin/users/{userId}")
+    suspend fun adminDeleteUser(@Path("userId") userId: String): Response<ApiResponse<Any>>
+
+    @PUT("api/admin/users/{userId}/password")
+    suspend fun adminChangeUserPassword(
+        @Path("userId") userId: String,
+        @Body request: AdminChangePasswordRequest
+    ): Response<ApiResponse<Any>>
+
+    @DELETE("api/admin/groups/{groupId}")
+    suspend fun adminDisbandGroup(@Path("groupId") groupId: String): Response<ApiResponse<Any>>
+
+    @PUT("api/admin/settings")
+    suspend fun adminUpdateSettings(@Body request: AdminUpdateSettingsRequest): Response<ApiResponse<User>>
 }

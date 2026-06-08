@@ -13,6 +13,7 @@ import com.cloudflarechat.R
 import com.cloudflarechat.data.api.ApiClient
 import com.cloudflarechat.databinding.ActivityMainBinding
 import com.cloudflarechat.ui.login.LoginActivity
+import com.cloudflarechat.ui.settings.SettingsActivity
 import com.cloudflarechat.util.PreferencesManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,6 +62,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.menu_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                return true
+            }
             R.id.menu_logout -> {
                 CoroutineScope(Dispatchers.IO).launch {
                     prefs.clearAll()

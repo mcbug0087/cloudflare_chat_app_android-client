@@ -25,6 +25,7 @@ data class AuthResponse(
 data class User(
     val id: String,
     val nickname: String,
+    val role: String? = null,
     @SerializedName("created_at") val createdAt: String? = null
 )
 
@@ -112,6 +113,45 @@ data class GroupNicknameRequest(
 
 data class UpdateGroupNameRequest(
     val name: String
+)
+
+// New models for user profile management
+data class ChangePasswordRequest(
+    @SerializedName("old_password") val oldPassword: String,
+    @SerializedName("new_password") val newPassword: String
+)
+
+data class DeleteAccountRequest(
+    val password: String
+)
+
+data class ChangeNicknameRequest(
+    val nickname: String
+)
+
+// Admin models
+data class AdminUser(
+    val id: String,
+    val nickname: String,
+    val role: String? = null,
+    @SerializedName("is_banned") val isBanned: Boolean? = null,
+    @SerializedName("created_at") val createdAt: String? = null
+)
+
+data class AdminGroup(
+    val id: String,
+    val name: String,
+    @SerializedName("group_code") val groupCode: String? = null,
+    @SerializedName("created_at") val createdAt: String? = null
+)
+
+data class AdminChangePasswordRequest(
+    @SerializedName("new_password") val newPassword: String
+)
+
+data class AdminUpdateSettingsRequest(
+    val nickname: String? = null,
+    @SerializedName("new_password") val newPassword: String? = null
 )
 
 // WebSocket messages

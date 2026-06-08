@@ -35,6 +35,14 @@
         <activity
             android:name=".ui.group.GroupInfoActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.settings.AdminPanelActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
