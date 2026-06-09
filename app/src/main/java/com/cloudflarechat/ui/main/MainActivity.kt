@@ -47,6 +47,10 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.setTitle(R.string.app_name)
 
+        // 左上角齿轮图标 → 设置面板
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(android.R.drawable.ic_menu_preferences)
+
         binding.viewPager.adapter = MainPagerAdapter(this)
         binding.viewPager.offscreenPageLimit = 3
         binding.tabLayout.tabGravity = TabLayout.GRAVITY_FILL
@@ -70,6 +74,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            android.R.id.home -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                return true
+            }
             R.id.menu_settings -> {
                 startActivity(Intent(this, SettingsActivity::class.java))
                 return true

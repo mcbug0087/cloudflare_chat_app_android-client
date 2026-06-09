@@ -27,9 +27,12 @@ class ChatsAdapter(private val onClick: (ChatInfo) -> Unit) :
     inner class ViewHolder(private val binding: ItemChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(chat: ChatInfo) {
-            // 私聊时优先用好友备注，否则用 API 返回的 name
+            // 私聊时优先用好友备注，其次用 API 返回的 name
             val displayName = if (chat.chatType != "group") {
-                friendNames[chat.id] ?: chat.name ?: "未知"
+                friendNames[chat.id]
+                    ?: friendNames[chat.name]
+                    ?: chat.name
+                    ?: "未知"
             } else {
                 chat.name ?: "未知群聊"
             }
