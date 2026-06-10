@@ -49,7 +49,7 @@ data class ChatInfo(
     val id: String,
     val name: String? = null,
     @SerializedName("last_message") val lastMessage: Message? = null,
-    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("created_at") val createdAt: Any? = null,
     @SerializedName("chat_type") val chatType: String? = null
 )
 
@@ -62,9 +62,10 @@ data class Message(
     val content: String,
     @SerializedName("sender_id") val senderId: String,
     @SerializedName("sender_nickname") val senderNickname: String? = null,
+    @SerializedName("nickname") val nickname: String? = null,
     @SerializedName("chat_id") val chatId: String? = null,
     @SerializedName("chat_type") val chatType: String? = null,
-    @SerializedName("created_at") val createdAt: String? = null
+    @SerializedName("created_at") val createdAt: Any? = null
 )
 
 data class SendMessageRequest(
