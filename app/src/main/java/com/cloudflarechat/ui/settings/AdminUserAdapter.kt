@@ -33,13 +33,18 @@ class AdminUserAdapter(
     inner class ViewHolder(private val binding: ItemAdminUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(user: AdminUser) {
+            val banned = when (val b = user.isBanned) {
+                is Boolean -> b
+                is Number -> b.toInt() != 0
+                else -> false
+            }
             binding.tvName.text = user.nickname
             binding.tvRole.text = if (user.role == "super_admin") "超级管理员" else user.role ?: "普通用户"
-            binding.tvBanned.text = if (user.isBanned == true) "已封禁" else ""
+            binding.tvBanned.text = if (banned) "已封禁" else ""
             binding.tvBanned.visibility =
-                if (user.isBanned == true) android.view.View.VISIBLE else android.view.View.GONE
+                if (banned) android.view.View.VISIBLE else android.view.View.GONE
 
-            binding.btnBan.text = if (user.isBanned == true) "解封" else "封禁"
+            binding.btnBan.text = if (banned) "解封" else "封禁"
             if (user.role == "super_admin") {
                 binding.btnBan.isEnabled = false
                 binding.btnDelete.isEnabled = false
