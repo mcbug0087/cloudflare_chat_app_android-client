@@ -32,6 +32,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 设置 Toolbar 为 ActionBar（必须调用，否则齿轮图标不显示）
+        setSupportActionBar(binding.toolbar)
+
         prefs = PreferencesManager(this)
 
         // 恢复 token

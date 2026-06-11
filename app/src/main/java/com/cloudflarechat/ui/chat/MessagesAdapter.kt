@@ -41,11 +41,12 @@ class MessagesAdapter : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(message: Message) {
             val isSelf = message.senderId == currentUserId
-            // 优先从名称映射中查找，其次用 API 返回的昵称，最后用 ID
+            // 优先从名称映射中查找，其次用 API 返回的 nickname 字段，最后用 ID
             val displayName = if (isSelf) {
-                message.senderNickname ?: message.senderId
+                message.nickname ?: message.senderNickname ?: message.senderId
             } else {
                 senderNames[message.senderId]
+                    ?: message.nickname
                     ?: message.senderNickname
                     ?: message.senderId
             }
