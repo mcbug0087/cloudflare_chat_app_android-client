@@ -94,7 +94,7 @@ data class GroupDetail(
 )
 
 data class GroupMember(
-    val id: String,
+    @SerializedName(value = "id", alternate = ["user_id"]) val id: String,
     val nickname: String,
     val role: String,
     @SerializedName("group_nickname") val groupNickname: String? = null
@@ -135,7 +135,7 @@ data class AdminUser(
     val id: String,
     val nickname: String,
     val role: String? = null,
-    @SerializedName("is_banned") val isBanned: Boolean? = null,
+    @SerializedName("is_banned") val isBanned: Any? = null,
     @SerializedName("created_at") val createdAt: String? = null
 )
 

@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         // 左上角齿轮图标 → 设置面板
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(android.R.drawable.ic_menu_preferences)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_gear)
 
         binding.viewPager.adapter = MainPagerAdapter(this)
         binding.viewPager.offscreenPageLimit = 3

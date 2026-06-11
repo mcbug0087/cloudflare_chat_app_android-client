@@ -27,7 +27,7 @@ interface ApiService {
     @POST("api/auth/change-password")
     suspend fun changePassword(@Body request: ChangePasswordRequest): Response<ApiResponse<Any>>
 
-    @DELETE("api/auth/delete-account")
+    @HTTP(method = "DELETE", path = "api/auth/delete-account", hasBody = true)
     suspend fun deleteAccount(@Body request: DeleteAccountRequest): Response<ApiResponse<Any>>
 
     // Friends
