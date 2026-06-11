@@ -15,8 +15,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:contentDescription="@string/add_friend"
-        android:src="@android:drawable/ic_menu_search"
+        app:srcCompat="@android:drawable/ic_menu_search"
         android:backgroundTint="@color/primary"
-        android:tint="@color/white"/>
+        app:tint="@color/white"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

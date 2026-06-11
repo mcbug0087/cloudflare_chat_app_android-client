@@ -5,14 +5,19 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.cloudflarechat.R
+import com.cloudflarechat.data.api.ApiClient
 import com.cloudflarechat.data.model.AdminUser
 import com.cloudflarechat.data.model.AdminGroup
 import com.cloudflarechat.data.repository.ChatRepository
 import com.cloudflarechat.databinding.ActivityAdminPanelBinding
+import com.cloudflarechat.util.PreferencesManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AdminPanelActivity : AppCompatActivity() {
@@ -32,6 +37,7 @@ class AdminPanelActivity : AppCompatActivity() {
         binding = ActivityAdminPanelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = "超级管理员面板"
@@ -39,6 +45,15 @@ class AdminPanelActivity : AppCompatActivity() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = userAdapter
+
+        // 修复 TabLayout 选中后文字消失
+        binding.tabLayout.setTabTextColors(
+            ContextCompat.getColor(this, android.R.color.white),
+            ContextCompat.getColor(this, R.color.white)
+        )
+        binding.tabLayout.setSelectedTabIndicatorColor(
+            ContextCompat.getColor(this, R.color.white)
+        )
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
@@ -51,7 +66,15 @@ class AdminPanelActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
 
-        loadUsers()
+        // 恢复 token（确保有权限访问管理接口）
+        lifecycleScope.launch {
+            val prefs = PreferencesManager(this@AdminPanelActivity)
+            val token = prefs.token.first()
+            if (!token.isNullOrEmpty()) {
+                ApiClient.token = token
+            }
+            loadUsers()
+        }
     }
 
     private fun loadUsers() {
