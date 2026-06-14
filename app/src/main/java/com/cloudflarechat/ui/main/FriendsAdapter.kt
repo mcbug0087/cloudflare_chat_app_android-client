@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cloudflarechat.data.model.Friend
 import com.cloudflarechat.databinding.ItemUserBinding
 
-class FriendsAdapter(private val onLongClick: (Friend) -> Unit) :
+class FriendsAdapter(
+    private val onClick: (Friend) -> Unit,
+    private val onLongClick: (Friend) -> Unit
+) :
     ListAdapter<Friend, FriendsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,6 +31,7 @@ class FriendsAdapter(private val onLongClick: (Friend) -> Unit) :
                 binding.tvName.text = "${friend.remark} (${friend.nickname})"
             }
             binding.btnAction.visibility = android.view.View.GONE
+            binding.root.setOnClickListener { onClick(friend) }
             binding.root.setOnLongClickListener {
                 onLongClick(friend)
                 true
