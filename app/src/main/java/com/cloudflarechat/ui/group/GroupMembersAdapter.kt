@@ -23,7 +23,9 @@ class GroupMembersAdapter(private val onClick: (GroupMember) -> Unit) :
     inner class ViewHolder(private val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(member: GroupMember) {
-            val displayName = member.groupNickname ?: member.nickname
+            val displayName = member.groupNickname?.takeIf { it.isNotBlank() }
+                ?: member.nickname.takeIf { it.isNotBlank() }
+                ?: member.id
             binding.tvName.text = when (member.role) {
                 "owner" -> "👑 $displayName"
                 "admin" -> "⭐ $displayName"

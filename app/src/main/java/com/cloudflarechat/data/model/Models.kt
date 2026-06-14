@@ -89,13 +89,13 @@ data class CreateGroupRequest(
 
 data class GroupDetail(
     val group: Group,
-    val members: List<GroupMember>,
+    @SerializedName(value = "members", alternate = ["users", "participants"]) val members: List<GroupMember>,
     @SerializedName("my_role") val myRole: String
 )
 
 data class GroupMember(
-    @SerializedName(value = "id", alternate = ["user_id"]) val id: String,
-    @SerializedName(value = "nickname", alternate = ["name"]) val nickname: String,
+    @SerializedName(value = "id", alternate = ["user_id", "userId"]) val id: String,
+    @SerializedName(value = "nickname", alternate = ["name", "username", "user_name", "display_name", "displayName"]) val nickname: String,
     val role: String,
     @SerializedName("group_nickname") val groupNickname: String? = null
 )
