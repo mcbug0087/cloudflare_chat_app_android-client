@@ -1,5 +1,6 @@
 package com.cloudflarechat.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.cloudflarechat.data.model.Friend
 import com.cloudflarechat.data.model.User
 import com.cloudflarechat.data.repository.ChatRepository
 import com.cloudflarechat.databinding.FragmentFriendsBinding
+import com.cloudflarechat.ui.chat.ChatActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -21,7 +23,10 @@ class FriendsFragment : Fragment() {
     private var _binding: FragmentFriendsBinding? = null
     private val binding get() = _binding!!
     private val repository = ChatRepository()
-    private val friendsAdapter = FriendsAdapter { friend -> onFriendLongClick(friend) }
+    private val friendsAdapter = FriendsAdapter(
+        onClick = { friend -> onFriendClick(friend) },
+        onLongClick = { friend -> onFriendLongClick(friend) }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -105,6 +110,24 @@ class FriendsFragment : Fragment() {
                 },
                 onFailure = { e ->
                     Snackbar.make(binding.root, e.message ?: "添加失败", Snackbar.LENGTH_SHORT).show()
+                }
+            )
+        }
+    }
+
+    private fun onFriendClick(friend: Friend) {
+        lifecycleScope.launch {
+            val result = repository.createPrivateChat(friend.id)
+            result.fold(
+                onSuccess = { chat ->
+                    startActivity(Intent(requireContext(), ChatActivity::class.java).apply {
+                        putExtra("chat_id", chat.id)
+                        putExtra("chat_name", friend.remark ?: friend.nickname)
+                        putExtra("chat_type", "private")
+                    })
+                },
+                onFailure = { e ->
+                    Snackbar.make(binding.root, e.message ?: "创建私聊失败", Snackbar.LENGTH_SHORT).show()
                 }
             )
         }

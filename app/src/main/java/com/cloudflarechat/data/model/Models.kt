@@ -95,7 +95,7 @@ data class GroupDetail(
 
 data class GroupMember(
     @SerializedName(value = "id", alternate = ["user_id"]) val id: String,
-    val nickname: String,
+    @SerializedName(value = "nickname", alternate = ["name"]) val nickname: String,
     val role: String,
     @SerializedName("group_nickname") val groupNickname: String? = null
 )
